@@ -9,8 +9,31 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-       
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
 
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid Margin="5,0,5,0">
+                <TextBox HorizontalAlignment="Stretch"></TextBox>
+            </Grid>
 
+            <Grid Grid.Column="1" Margin="5,0,5,0">
+                <Button Content="&#xe110;"
+                    AutomationProperties.Name="Text Label"
+                    Width="50"
+                    MinWidth="90" ></Button>
+            </Grid>
+            
+        </Grid>
+        <Grid Grid.Row="1">
+            
+        </Grid>
     </Grid>
 </Page>
