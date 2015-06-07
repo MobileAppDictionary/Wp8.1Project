@@ -12,6 +12,11 @@ namespace H2Dict.Helper
 {
     public class DataHelper
     {
+        private const string path = @"ms-appx:///Data/";
+        private const string fileInd = ".index.txt.";
+        private const string fileDict = ".dict.txt";
+        private const string typeDict = "EnVi/anhviet109K";
+
         private static DataHelper _dataHelper = new DataHelper();
         private ListWords _lstWords = new ListWords();
         public static async Task<ListWords> LoadListWords()
@@ -28,7 +33,7 @@ namespace H2Dict.Helper
             
             string result = null;
 
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(@"ms-appx:///Data/EnVi/anhviet109K.index.txt"));
+            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path + typeDict + fileInd));
             
             using (StreamReader sRead = new StreamReader(await file.OpenStreamForReadAsync()))
                 result = await sRead.ReadToEndAsync();
@@ -45,6 +50,17 @@ namespace H2Dict.Helper
             }
 
             return _lstWords;
+        }
+
+        private async Task<string> ReadFile(int offset, int lenght)
+        {
+            var fold = Windows.Storage.ApplicationData.Current.LocalFolder;
+
+            string result = null;
+
+            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path + typeDict + fileDict));
+
+            return result;
         }
     }
 }

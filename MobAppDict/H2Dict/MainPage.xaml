@@ -22,13 +22,25 @@
             </Grid.ColumnDefinitions>
             
             <Grid Margin="5,0,5,0">
-                <AutoSuggestBox
+                <AutoSuggestBox 
+                    Name="txtSearch"
+   TextChanged="txtSearch_TextChanged"
+   SuggestionChosen="txtSearch_SuggestionChosen">
+                    <AutoSuggestBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </AutoSuggestBox.ItemTemplate>
+                </AutoSuggestBox>
+                <!--<AutoSuggestBox
                     x:Name="txtSearch" 
                     
                     ItemsSource="{Binding Suggestions}" 
                     VerticalAlignment="Center" 
                     TextChanged="txtSearch_TextChanged" 
-                    SuggestionChosen="txtSearch_SuggestionChosen"/>
+                    SuggestionChosen="txtSearch_SuggestionChosen"/>-->
             </Grid>
 
             <Grid Grid.Column="1" Margin="5,0,5,0">

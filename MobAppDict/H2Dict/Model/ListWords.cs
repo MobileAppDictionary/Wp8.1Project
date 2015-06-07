@@ -52,5 +52,15 @@ namespace H2Dict.Model
                 handler(this, new PropertyChangedEventArgs(propName));
             }
         }
+
+        // Method Execute
+        public string Search(string key)
+        {
+            string res = null;
+
+
+
+            return res;
+        }
     }
 }
