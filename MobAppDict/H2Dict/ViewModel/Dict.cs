@@ -28,12 +28,17 @@ namespace H2Dict.ViewModel
             string res = null;
 
             int ind = _lstWord.LstKey.FindIndex(x => x.Equals(key));
-            if (ind > 0)
+            if (ind >= 0)
             {
                 int offset = GetDemicalValue(_lstWord.LstOffset[ind]);
                 int length = GetDemicalValue(_lstWord.LstLength[ind]);
+                res = await GetMeaning(offset, length);
+                //res = offset + length + "";
+                res = _lstWord.LstOffset[ind] + " " + _lstWord.LstLength[ind] + " " + res;
             }
-            
+
+            if (res == null)
+                res = "N/A";
 
             return res;
         }
@@ -76,9 +81,7 @@ namespace H2Dict.ViewModel
 
         private async Task<string> GetMeaning (int offset, int length)
         {
-            string res = null;
-
-            return res;
+            return await DataHelper.GetMeaning(offset, length);
         }
     }
 }

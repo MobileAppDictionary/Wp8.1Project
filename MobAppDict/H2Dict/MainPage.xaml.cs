@@ -90,6 +90,7 @@ namespace H2Dict
         {
             string str = txtSearch.Text;
             string res = await Dict.Search(str);
+
             txtDisplay.Text = res;
         }
 
@@ -103,7 +104,7 @@ namespace H2Dict
 
         private void txtSearch_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            sender.Text = "Choosen";
+            sender.Text = txtSearch.Text;
         }
 
         // Suggestion word for AutoSuggestion

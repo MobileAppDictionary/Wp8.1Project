@@ -34,13 +34,6 @@
                         </DataTemplate>
                     </AutoSuggestBox.ItemTemplate>
                 </AutoSuggestBox>
-                <!--<AutoSuggestBox
-                    x:Name="txtSearch" 
-                    
-                    ItemsSource="{Binding Suggestions}" 
-                    VerticalAlignment="Center" 
-                    TextChanged="txtSearch_TextChanged" 
-                    SuggestionChosen="txtSearch_SuggestionChosen"/>-->
             </Grid>
 
             <Grid Grid.Column="1" Margin="5,0,5,0">
@@ -53,7 +46,7 @@
             </Grid>
         </Grid>
         <Grid Grid.Row="1">
-            <TextBox Name="txtDisplay" Height="400" Text="{Binding Meaning}">
+            <TextBox Name="txtDisplay" Height="400" TextWrapping="Wrap">
             </TextBox>
         </Grid>
     </Grid>
