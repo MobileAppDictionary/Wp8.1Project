@@ -20,6 +20,7 @@
 ####b. Các chức năng nâng cao:
 - Cập nhật các từ điển khác (Pháp Việt, Việt Pháp...) thông qua server cá nhân.
 - Nhắc nhở người dùng học từ vựng hằng ngày.
+
 ###3. Tham khảo:
 - Dữ liệu sử dụng của Hồ Ngọc Đức xây dựng.
 - Tham khảo các nguồn:
