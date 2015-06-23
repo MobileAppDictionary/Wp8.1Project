@@ -116,6 +116,8 @@
     <Content Include="Assets\WideLogo.scale-240.png" />
     <Content Include="Data\EnVi\anhviet109K.dict.txt" />
     <Content Include="Data\EnVi\anhviet109K.index.txt" />
+    <Content Include="Data\EnVi\Favorite.txt" />
+    <Content Include="Data\EnVi\TranslatedWords.txt" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
