@@ -20,11 +20,33 @@ namespace H2Dict
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class AddNewWorld : Page
+    public sealed partial class TranslatedWords : Page
     {
-        public AddNewWorld()
+        private readonly NavigationHelper navigationHelper;
+
+        public NavigationHelper NavigationHelper
+        {
+            get { return navigationHelper; }
+        }
+
+        public TranslatedWords()
         {
             this.InitializeComponent();
+            this.NavigationCacheMode = NavigationCacheMode.Required;
+
+            this.navigationHelper = new NavigationHelper(this);
+            this.NavigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this.NavigationHelper.SaveState += this.NavigationHelper_SaveState;
+        }
+
+        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        {
+            await Dict.LoadListWords();
         }
 
         /// <summary>
@@ -34,6 +56,7 @@ namespace H2Dict
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            this.navigationHelper.OnNavigatedTo(e);
         }
     }
 }

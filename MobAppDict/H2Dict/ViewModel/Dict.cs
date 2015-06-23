@@ -83,5 +83,10 @@ namespace H2Dict.ViewModel
         {
             return await DataHelper.GetMeaning(offset, length);
         }
+
+        public async Task LoadTranslatedWords()
+        {
+
+        }
     }
 }
