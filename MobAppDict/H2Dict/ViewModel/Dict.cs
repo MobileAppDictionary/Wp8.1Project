@@ -29,13 +29,14 @@ namespace H2Dict.ViewModel
         public List<string> LstTranslatedWords
         {
             get { return _lstTranslatedWords; }
+            set { _lstTranslatedWords = value; }
         }
 
         public List<string> LstFavoriteWords
         {
             get { return _lstFavoriteWords; }
+            set { _lstFavoriteWords = value; }
         }
-
 
         // Method
         // Load All Words
@@ -141,12 +142,12 @@ namespace H2Dict.ViewModel
 
             await DataHelperTranslatedWords.SaveListWords(_lstTranslatedWords);
 
-            _lstTranslatedWords.Clear();
+            //_lstTranslatedWords.Clear();
         }
 
-        public async void CleatAllTranslatedWords()
+        public async Task ClearTranslatedWords()
         {
-            await DataHelperTranslatedWords.SaveListWords(new List<string>());
+            await DataHelperTranslatedWords.SaveListWords(_lstTranslatedWords);
 
             _lstTranslatedWords.Clear();
         }

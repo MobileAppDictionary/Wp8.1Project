@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.Streams;
 
 namespace H2Dict.Helper
 {
@@ -26,10 +27,23 @@ namespace H2Dict.Helper
                 return _lstWords;
 
             string result = null;
-            string path = @"ms-appx:///Data/" + typeDict + FileName;
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
+//            string path = @"ms-appx:///Data/" + typeDict + FileName;
+//            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
+            StorageFolder local = ApplicationData.Current.LocalFolder;
+            StorageFolder fold;
+            if (await FolderExists(local, TypeDict))
+            {
+                fold = await StorageFolder.GetFolderFromPathAsync(local + TypeDict);
+            }
+            else
+            {
+                fold = await local.CreateFolderAsync(TypeDict);
+            }
 
-            using (StreamReader sRead = new StreamReader(await file.OpenStreamForReadAsync()))
+            if (!await FileExists(fold, FileName))
+                fold.CreateFileAsync(FileName);
+
+            using (StreamReader sRead = new StreamReader(await fold.OpenStreamForReadAsync(FileName)))
                 result = await sRead.ReadToEndAsync();
 
             string[] lines = result.Split(new char[2] { '\r', '\n' });
@@ -43,6 +57,25 @@ namespace H2Dict.Helper
             return _lstWords;
         }
 
+        private async Task<bool> FolderExists(StorageFolder folder, string name)
+        {
+            try
+            {
+                StorageFolder file = await folder.GetFolderAsync(name);
+            }
+            catch { return false; }
+            return true;
+        }
+
+        private async Task<bool> FileExists(StorageFolder folder, string name)
+        {
+            try
+            {
+                StorageFile file = await folder.GetFileAsync(name);
+            }
+            catch { return false; }
+            return true;
+        }
         public static async Task SaveListWords(List<string> lstWords)
         {
             string value = "";
@@ -57,15 +90,36 @@ namespace H2Dict.Helper
 
         private async Task SaveListWords(string value)
         {
-            string path = @"ms-appx:///Data/" + TypeDict + FileName;
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
+            //string path = @"ms-appx:///Data/" + TypeDict + FileName;
+            StorageFolder local = ApplicationData.Current.LocalFolder;
+            StorageFolder fold;
+            if (await FolderExists(local, TypeDict))
+            {
+                fold = await StorageFolder.GetFolderFromPathAsync(local + TypeDict);
+            }
+            else
+            {
+                fold = await local.CreateFolderAsync(TypeDict);
+            }
+
+            if (!await FileExists(fold, FileName))
+                fold.CreateFileAsync(FileName);
+            //StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
+            StorageFile file = await fold.CreateFileAsync(FileName, CreationCollisionOption.ReplaceExisting);
+//            IRandomAccessStreamReference thumbail = RandomAccessStreamReference.CreateFromUri(new Uri(path));
+//            StorageFile fileTemp =
+//                await StorageFile.ReplaceWithStreamedFileFromUriAsync(file, new Uri(@"ms-appx:///Data/" + TypeDict), thumbail);
+            //StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(TypeDict + FileName, CreationCollisionOption.ReplaceExisting);
 
             using (StreamWriter sWrite = new StreamWriter(await file.OpenStreamForWriteAsync()))
             {
+                sWrite.Flush();
                 await sWrite.WriteAsync(value);
-                _lstWords.Clear();
+                await sWrite.FlushAsync();
+                sWrite.Dispose();
             }
-
+            //_lstWords.Clear();
+            //_lstWords = await LoadListWords();
         }
     }
 }

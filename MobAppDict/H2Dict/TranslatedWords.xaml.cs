@@ -185,5 +185,42 @@ namespace H2Dict
         {
             
         }
+
+        private void TranslatedWordsList_OnSelectionModeChanged(object sender, RoutedEventArgs e)
+        {
+            if (TranslatedWordsList.SelectionMode != ListViewSelectionMode.Multiple)
+            {
+                SelectAppBarButton.Visibility = Visibility.Visible;
+                OkAppBarButton.Visibility = Visibility.Collapsed;
+                TranslatedWordsList.IsItemClickEnabled = true;
+            }
+            else
+            {
+                SelectAppBarButton.Visibility = Visibility.Collapsed;
+                OkAppBarButton.Visibility = Visibility.Visible;
+                TranslatedWordsList.IsItemClickEnabled = false;
+            }
+        }
+
+        private void SelectAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            TranslatedWordsList.SelectionMode = ListViewSelectionMode.Multiple;
+        }
+
+        private async void OkAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            foreach (var item in TranslatedWordsList.SelectedItems)
+            {
+                Dict.LstTranslatedWords.Remove(item.ToString());
+
+            }
+
+            TranslatedWordsList.ItemsSource = null;
+            TranslatedWordsList.ItemsSource = Dict.LstTranslatedWords;
+            TranslatedWordsList.SelectionMode = ListViewSelectionMode.None;
+
+            //await Dict.ClearTranslatedWords();
+        }
     }
 }

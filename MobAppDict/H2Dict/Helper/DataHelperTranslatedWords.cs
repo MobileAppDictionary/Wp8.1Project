@@ -26,8 +26,21 @@ namespace H2Dict.Helper
                 return _lstWords;
 
             string result = null;
-            string path = @"ms-appx:///Data/" + typeDict + FileName;
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
+            StorageFolder local = ApplicationData.Current.LocalFolder;
+            StorageFolder fold;
+            if (await FolderExists(local, TypeDict))
+            {
+                fold = await StorageFolder.GetFolderFromPathAsync(local + TypeDict);
+            }
+            else
+            {
+                fold = await local.CreateFolderAsync(TypeDict);
+            }
+
+            if (!await FileExists(fold, FileName))
+                fold.CreateFileAsync(FileName);
+
+            StorageFile file = await fold.GetFileAsync(FileName);
 
             using (StreamReader sRead = new StreamReader(await file.OpenStreamForReadAsync()))
                 result = await sRead.ReadToEndAsync();
@@ -57,15 +70,49 @@ namespace H2Dict.Helper
 
         private async Task SaveListWords(string value)
         {
-            string path = @"ms-appx:///Data/" + TypeDict + FileName;
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
+            StorageFolder local = ApplicationData.Current.LocalFolder;
+            StorageFolder fold;
+            if (await FolderExists(local, TypeDict))
+            {
+                fold = await StorageFolder.GetFolderFromPathAsync(local + TypeDict);
+            }
+            else
+            {
+                fold = await local.CreateFolderAsync(TypeDict);
+            }
+
+            if (!await FileExists(fold, FileName))
+                fold.CreateFileAsync(FileName);
+
+            StorageFile file = await fold.CreateFileAsync(FileName, CreationCollisionOption.ReplaceExisting);
 
             using (StreamWriter sWrite = new StreamWriter(await file.OpenStreamForWriteAsync()))
             {
                 await sWrite.WriteAsync(value);
-                _lstWords.Clear();
+                
             }
+            _lstWords.Clear();
+            _lstWords = await LoadListWords();
+        }
 
+        private async Task<bool> FolderExists(StorageFolder folder, string name)
+        {
+            try
+            {
+                StorageFolder file = await folder.GetFolderAsync(name);
+            }
+            catch { return false; }
+            return true;
+        }
+
+        private async Task<bool> FileExists(StorageFolder folder, string name)
+        {
+            try
+            {
+                StorageFile file = await folder.GetFileAsync(name);
+            }
+            catch { return false; }
+            return true;
         }
     }
 }

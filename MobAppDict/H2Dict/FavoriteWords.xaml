@@ -42,7 +42,7 @@
             <TextBlock Text="DICTIONARY"
                        Style="{ThemeResource TitleTextBlockStyle}"
                        Typography.Capitals="SmallCaps" />
-            <TextBlock Text="Favorite Words"
+            <TextBlock Text="Favorite"
                        Margin="0,-6,0,0"
                        Style="{ThemeResource HeaderTextBlockStyle}" />
         </StackPanel>
