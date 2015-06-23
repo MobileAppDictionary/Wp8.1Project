@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Phone.UI.Input;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -57,7 +58,8 @@ namespace H2Dict
             this.NavigationCacheMode = NavigationCacheMode.Required;
 
             this._navigationHelper = new NavigationHelper(this);
-
+            this.NavigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this.NavigationHelper.SaveState += this.NavigationHelper_SaveState;
 
         }
 
@@ -71,9 +73,9 @@ namespace H2Dict
 
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            if(_lstAllTranslatedWords.Count != 0)
-                _lstAllTranslatedWords.Clear();
-            _lstAllTranslatedWords = await Dict.LoadTranslatedWords();
+//            if(_lstAllTranslatedWords.Count != 0)
+//                _lstAllTranslatedWords.Clear();
+//            _lstAllTranslatedWords = await Dict.LoadTranslatedWords();
         }
 
         /// <summary>
@@ -83,9 +85,9 @@ namespace H2Dict
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this._navigationHelper.OnNavigatedTo(e);
-//            Dict.LoadTranslatedWords();
-//            _lstAllTranslatedWords = Dict.LstTranslatedWords;
+            if(Dict.LstTranslatedWords.Count == 0)
+                this._navigationHelper.OnNavigatedTo(e);
+
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -96,15 +98,14 @@ namespace H2Dict
 
         private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
         {
-            Frame frame = Window.Current.Content as Frame;
-            if (frame == null)
+            if (Frame == null)
             {
                 Application.Current.Exit();
             }
 
-            if (frame.CanGoBack)
+            if (Frame.CanGoBack)
             {
-                frame.GoBack();
+                //Frame.GoBack();
                 e.Handled = true;
             }
         }
@@ -174,5 +175,15 @@ namespace H2Dict
 //            FetchCountries(0);
 //
 //        }
+        private void TranslatedWordsList_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+
+            Frame.Navigate(typeof (Meaning), e.ClickedItem.ToString());
+        }
+
+        private void AppBarButtonDel_OnClick(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

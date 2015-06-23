@@ -19,12 +19,19 @@
 <!--        </ListView>-->
 <!--    </Grid>-->
     <Grid>
-        <ListView x:Name="TranslatedWordsList" Loaded="TranslatedWordsList_Loaded">
+        <ListView x:Name="TranslatedWordsList" Loaded="TranslatedWordsList_Loaded" ItemClick="TranslatedWordsList_OnItemClick" IsItemClickEnabled="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}" FontSize="24" FontWeight="Light"></TextBlock>
+                    <TextBlock Name="txtWord" Text="{Binding}" FontSize="24" FontWeight="Light"></TextBlock>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar IsSticky="True" x:Name="appBar">
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Delete all" Name="AppBarButtonDel" Click="AppBarButtonDel_OnClick"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

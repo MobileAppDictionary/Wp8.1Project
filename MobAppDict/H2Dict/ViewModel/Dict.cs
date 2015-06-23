@@ -132,11 +132,18 @@ namespace H2Dict.ViewModel
                 _lstTranslatedWords.Insert(0,word);
             }
 
-            // Chú ý
             await DataHelperTranslatedWords.SaveListWords(_lstTranslatedWords);
 
             _lstTranslatedWords.Clear();
         }
+
+        public async void CleatAllTranslatedWords()
+        {
+            await DataHelperTranslatedWords.SaveListWords(new List<string>());
+
+            _lstTranslatedWords.Clear();
+        }
+
         #endregion
     }
 }

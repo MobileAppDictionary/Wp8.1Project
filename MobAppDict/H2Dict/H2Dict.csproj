@@ -95,6 +95,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Meaning.xaml.cs">
+      <DependentUpon>Meaning.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\ListWords.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TranslatedWords.xaml.cs">
@@ -127,6 +130,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Meaning.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TranslatedWords.xaml">
       <SubType>Designer</SubType>
