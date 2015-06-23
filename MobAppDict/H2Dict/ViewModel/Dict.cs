@@ -29,11 +29,15 @@ namespace H2Dict.ViewModel
             get { return _lstTranslatedWords; }
         }
 
+
+        // Method
+        // Load All Words
         public async Task LoadListWords()
         {
             _lstWord = await DataHelper.LoadListWords();
         }
 
+        #region Search
         public async Task<string> Search(string key)
         {
             string res = null;
@@ -53,7 +57,7 @@ namespace H2Dict.ViewModel
 
             return res;
         }
-
+        // Get list suggestion
         public List<string> GetSuggestion(string key)
         {
             List<string> lstString = new List<string>();
@@ -94,14 +98,45 @@ namespace H2Dict.ViewModel
         {
             return await DataHelper.GetMeaning(offset, length);
         }
+        #endregion
 
+        #region Translated Words
         public async Task<List<string>>  LoadTranslatedWords()
         {
-            if (_lstTranslatedWords.Count != 0)
-                return _lstTranslatedWords;
-
             _lstTranslatedWords = await DataHelperTranslatedWords.LoadListWords();
             return _lstTranslatedWords;
         }
+
+        public async void UpdateTranslatedWords(string word)
+        {
+            if (_lstTranslatedWords.Count == 0)
+            {
+                _lstTranslatedWords = await DataHelperTranslatedWords.LoadListWords();
+            }
+
+            int ind = _lstTranslatedWords.FindIndex(x => x.Equals(word));
+            // Word not found
+            if (ind == -1)
+            {
+                _lstTranslatedWords.Insert(0, word);
+
+                if (_lstTranslatedWords.Count > 10)
+                {
+                    _lstTranslatedWords.RemoveAt(11);
+                }
+            }
+            // Have been word
+            else
+            {
+                _lstTranslatedWords.RemoveAt(ind);
+                _lstTranslatedWords.Insert(0,word);
+            }
+
+            // Chú ý
+            await DataHelperTranslatedWords.SaveListWords(_lstTranslatedWords);
+
+            _lstTranslatedWords.Clear();
+        }
+        #endregion
     }
 }

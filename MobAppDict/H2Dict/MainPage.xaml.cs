@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -83,7 +84,20 @@ namespace H2Dict
             // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.
-            this.navigationHelper.OnNavigatedTo(e);
+            if(Dict.LstWord.LstKey.Count == 0)
+                this.navigationHelper.OnNavigatedTo(e);
+            HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            //remove the handler before you leave!
+            HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
+        }
+
+        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
+        {
+            Application.Current.Exit();
         }
 
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -92,6 +106,9 @@ namespace H2Dict
             string res = await Dict.Search(str);
 
             txtDisplay.Text = res;
+            // Lưu lược sử.
+            if(res != "N/A")
+                Dict.UpdateTranslatedWords(str);
         }
 
         private void txtSearch_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)

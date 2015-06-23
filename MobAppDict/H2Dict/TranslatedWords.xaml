@@ -8,15 +8,23 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Loaded="Grid_Loaded">
-        <ProgressRing Name="progressring" Height="90" Width="90" IsActive="False"/>
-        <ListView Grid.Row="0" x:Name="TranslatedWordsList" Width="400" Loaded="TranslatedWordsList_Loaded">
+<!--    <Grid Loaded="Grid_Loaded">-->
+<!--        <ProgressRing Name="progressring" Height="90" Width="90" IsActive="False"/>-->
+<!--        <ListView Grid.Row="0" x:Name="TranslatedWordsList" Width="400" Loaded="TranslatedWordsList_Loaded">-->
+<!--            <ListView.ItemTemplate>-->
+<!--                <DataTemplate>-->
+<!--                    <TextBlock Text="{Binding name}" FontSize="24" FontWeight="Light" Margin="12,6"/>-->
+<!--                </DataTemplate>-->
+<!--            </ListView.ItemTemplate>-->
+<!--        </ListView>-->
+<!--    </Grid>-->
+    <Grid>
+        <ListView x:Name="TranslatedWordsList" Loaded="TranslatedWordsList_Loaded">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding name}" FontSize="24" FontWeight="Light" Margin="12,6"/>
+                    <TextBlock Text="{Binding}" FontSize="24" FontWeight="Light"></TextBlock>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
     </Grid>
-
 </Page>

@@ -22,6 +22,9 @@ namespace H2Dict.Helper
 
         private async Task<List<string>> LoadListWords(string typeDict)
         {
+            if (_lstWords.Count != 0)
+                return _lstWords;
+
             string result = null;
             string path = @"ms-appx:///Data/" + typeDict + FileName;
             StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
@@ -29,14 +32,40 @@ namespace H2Dict.Helper
             using (StreamReader sRead = new StreamReader(await file.OpenStreamForReadAsync()))
                 result = await sRead.ReadToEndAsync();
 
-            string[] lines = result.Split(new char[1] { '\n' });
-
+            string[] lines = result.Split(new char[2] { '\r','\n' });
+            
             foreach (string line in lines)
             {
-                _lstWords.Add(line);
+                if(line != "")
+                    _lstWords.Add(line);
             }
 
             return _lstWords;
+        }
+
+        public static async Task SaveListWords(List<string> lstWords)
+        {
+            string value = "";
+
+            foreach (var words in lstWords)
+            {
+                value = value + words + "\r\n";
+            }
+            await _dataHelper.SaveListWords(value);
+            
+        }
+
+        private async Task SaveListWords(string value)
+        {
+            string path = @"ms-appx:///Data/" + TypeDict + FileName;
+            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
+
+            using (StreamWriter sWrite = new StreamWriter(await file.OpenStreamForWriteAsync()))
+            {
+                await sWrite.WriteAsync(value);
+                _lstWords.Clear();
+            }
+
         }
     }
 }
