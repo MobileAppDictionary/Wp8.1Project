@@ -12,11 +12,13 @@ namespace H2Dict.ViewModel
     public class Dict
     {
         private ListWords _lstWord;
-        private List<string> _lstTranslatedWords; 
+        private List<string> _lstTranslatedWords;
+        private List<string> _lstFavoriteWords;
         public Dict()
         {
             _lstWord = new ListWords();
             _lstTranslatedWords = new List<string>();
+            _lstFavoriteWords = new List<string>();
         }
 
         public ListWords LstWord
@@ -27,6 +29,11 @@ namespace H2Dict.ViewModel
         public List<string> LstTranslatedWords
         {
             get { return _lstTranslatedWords; }
+        }
+
+        public List<string> LstFavoriteWords
+        {
+            get { return _lstFavoriteWords; }
         }
 
 
@@ -142,6 +149,21 @@ namespace H2Dict.ViewModel
             await DataHelperTranslatedWords.SaveListWords(new List<string>());
 
             _lstTranslatedWords.Clear();
+        }
+
+        #endregion
+
+        #region Favorite Words
+
+        public async Task<List<string>>  LoadFavoriteWords()
+        {
+            _lstFavoriteWords = await DataHelperFavoriteWords.LoadListWords();
+            return _lstFavoriteWords;
+        }
+
+        public async Task UpdateFavoriteWords()
+        {
+            await DataHelperFavoriteWords.SaveListWords(_lstFavoriteWords);
         }
 
         #endregion

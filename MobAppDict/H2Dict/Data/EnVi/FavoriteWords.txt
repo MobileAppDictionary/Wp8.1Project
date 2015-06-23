@@ -1,0 +1,11 @@
+﻿hello
+good
+bad
+phone
+book
+apple
+mobile
+ring
+mouse
+key
+board

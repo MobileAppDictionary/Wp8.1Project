@@ -134,5 +134,10 @@ namespace H2Dict
         {
             Frame.Navigate(typeof (TranslatedWords));
         }
+
+        private void AppBarButtonFavorite_OnClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof (FavoriteWords));
+        }
     }
 }

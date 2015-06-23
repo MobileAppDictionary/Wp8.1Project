@@ -64,7 +64,7 @@
             </CommandBar.PrimaryCommands>-->
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="History" Name="AppBarButtonHistory" Click="AppBarButtonHistory_OnClick"/>
-                <AppBarButton Label="Favorite words"/>
+                <AppBarButton Label="Favorite words" Name="AppBarButtonFavorite" Click="AppBarButtonFavorite_OnClick"/>
                 <AppBarButton Label="Speech to text"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
