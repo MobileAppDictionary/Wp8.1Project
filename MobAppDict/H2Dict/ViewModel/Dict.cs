@@ -12,10 +12,21 @@ namespace H2Dict.ViewModel
     public class Dict
     {
         private ListWords _lstWord;
-
+        private List<string> _lstTranslatedWords; 
         public Dict()
         {
             _lstWord = new ListWords();
+            _lstTranslatedWords = new List<string>();
+        }
+
+        public ListWords LstWord
+        {
+            get { return _lstWord; }
+        }
+
+        public List<string> LstTranslatedWords
+        {
+            get { return _lstTranslatedWords; }
         }
 
         public async Task LoadListWords()
@@ -84,9 +95,13 @@ namespace H2Dict.ViewModel
             return await DataHelper.GetMeaning(offset, length);
         }
 
-        public async Task LoadTranslatedWords()
+        public async Task<List<string>>  LoadTranslatedWords()
         {
+            if (_lstTranslatedWords.Count != 0)
+                return _lstTranslatedWords;
 
+            _lstTranslatedWords = await DataHelperTranslatedWords.LoadListWords();
+            return _lstTranslatedWords;
         }
     }
 }

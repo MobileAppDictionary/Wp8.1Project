@@ -81,9 +81,5 @@ namespace H2Dict.Helper
             return result;
         }
 
-        public async Task<List<string>> LoadTranslatedWords()
-        {
-
-        }
     }
 }

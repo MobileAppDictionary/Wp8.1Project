@@ -112,5 +112,10 @@ namespace H2Dict
         {
             return Dict.GetSuggestion(key);
         }
+
+        private void AppBarButtonHistory_OnClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof (TranslatedWords));
+        }
     }
 }

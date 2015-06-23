@@ -63,7 +63,7 @@
                 <AppBarButton Icon="ZoomIn" IsCompact="False" Label="ZoomIn"/>
             </CommandBar.PrimaryCommands>-->
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="History"/>
+                <AppBarButton Label="History" Name="AppBarButtonHistory" Click="AppBarButtonHistory_OnClick"/>
                 <AppBarButton Label="Favorite words"/>
                 <AppBarButton Label="Speech to text"/>
             </CommandBar.SecondaryCommands>
