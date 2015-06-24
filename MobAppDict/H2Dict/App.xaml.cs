@@ -34,6 +34,8 @@ namespace H2Dict
         /// </summary>
 
         public static TypeDict TypeDictIns;
+
+        public static bool ChangeDict = false;
         public App()
         {
             this.InitializeComponent();

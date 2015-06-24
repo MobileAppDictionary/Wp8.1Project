@@ -9,8 +9,32 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock Margin="5,0,5,0" Name="txtDisplay" Height="800" TextWrapping="Wrap" FontSize="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        </TextBlock>
+        <!-- TitlePanel -->
+        <StackPanel Margin="19,12,0,25">
+            <TextBlock Text="DICTIONARY"
+                       Style="{ThemeResource TitleTextBlockStyle}"
+                       Typography.Capitals="SmallCaps" />
+            <TextBlock Text="Meaning"
+                       Margin="0,-6,0,0"
+                       Style="{ThemeResource HeaderTextBlockStyle}" />
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <TextBlock Margin="10,0,10,5" Name="TxtWord" Style="{ThemeResource SubheaderTextBlockStyle}">
+                Hello
+            </TextBlock>
+        </Grid>
+        <Grid Grid.Row="2">
+            <ScrollViewer   VerticalScrollBarVisibility="Hidden"  VerticalScrollMode="Enabled" VerticalContentAlignment="Top" >
+                <TextBlock Margin="20,10,10,0" Name="TxtDisplay"  TextWrapping="Wrap" Style="{ThemeResource BodyTextBlockStyle}">
+                Deptrai
+                </TextBlock>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Page>

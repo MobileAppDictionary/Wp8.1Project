@@ -71,7 +71,12 @@ namespace H2Dict
             if (Dict.LstWord.LstKey.Count == 0)
                 this.navigationHelper.OnNavigatedTo(e);
 
-            txtDisplay.Text = await Dict.Search(word);
+            if (word != null)
+            {
+                TxtWord.Text = word;
+
+                TxtDisplay.Text = await Dict.Search(word);
+            }
 
         
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;

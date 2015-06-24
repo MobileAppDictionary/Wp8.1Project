@@ -9,23 +9,28 @@ namespace H2Dict.Helper
     public class DataHelperFavoriteWords
     {
         private const string FileName = "FavoriteWords.txt";
-        private string _typeDict = App.TypeDictIns.GetTypeDict();
+        private string _typeDict;
         private static DataHelperFavoriteWords _dataHelper = new DataHelperFavoriteWords();
-        private List<string> _lstWords = new List<string>();
+        private List<string> _lstWords;
 
+        #region Load from file
         public async static Task<List<string>> LoadListWords()
         {
             return await _dataHelper.LoadListWordsAsync();
         }
 
+        
         private async Task<List<string>> LoadListWordsAsync()
         {
+            _lstWords = new List<string>();
+
             if (_lstWords.Count != 0)
                 return _lstWords;
 
+            _typeDict = App.TypeDictIns.GetTypeDict();
+
             string result = null;
-//            string path = @"ms-appx:///Data/" + typeDict + FileName;
-//            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
+            
             StorageFolder local = ApplicationData.Current.LocalFolder;
             StorageFolder fold;
             if (await FolderExists(local, _typeDict))
@@ -53,7 +58,54 @@ namespace H2Dict.Helper
 
             return _lstWords;
         }
+        #endregion
 
+        #region Save to file
+        public static async Task SaveListWords(List<string> lstWords)
+        {
+            string value = "";
+
+            foreach (var words in lstWords)
+            {
+                value = value + words + "\r\n";
+            }
+            await _dataHelper.SaveListWords(value);
+
+        }
+
+        private async Task SaveListWords(string value)
+        {
+            _typeDict = App.TypeDictIns.GetTypeDict();
+            //string path = @"ms-appx:///Data/" + TypeDict + FileName;
+            StorageFolder local = ApplicationData.Current.LocalFolder;
+            StorageFolder fold;
+            if (await FolderExists(local, _typeDict))
+            {
+                fold = await local.GetFolderAsync(_typeDict);
+            }
+            else
+            {
+                fold = await local.CreateFolderAsync(_typeDict);
+            }
+
+            if (!await FileExists(fold, FileName))
+                fold.CreateFileAsync(FileName);
+
+            StorageFile file = await fold.CreateFileAsync(FileName, CreationCollisionOption.ReplaceExisting);
+
+            using (StreamWriter sWrite = new StreamWriter(await file.OpenStreamForWriteAsync()))
+            {
+                sWrite.Flush();
+                await sWrite.WriteAsync(value);
+                await sWrite.FlushAsync();
+                sWrite.Dispose();
+            }
+            //_lstWords.Clear();
+            //_lstWords = await LoadListWords();
+        }
+        #endregion
+
+        #region Support method
         private async Task<bool> FolderExists(StorageFolder folder, string name)
         {
             try
@@ -73,50 +125,6 @@ namespace H2Dict.Helper
             catch { return false; }
             return true;
         }
-        public static async Task SaveListWords(List<string> lstWords)
-        {
-            string value = "";
-
-            foreach (var words in lstWords)
-            {
-                value = value + words + "\r\n";
-            }
-            await _dataHelper.SaveListWords(value);
-
-        }
-
-        private async Task SaveListWords(string value)
-        {
-            //string path = @"ms-appx:///Data/" + TypeDict + FileName;
-            StorageFolder local = ApplicationData.Current.LocalFolder;
-            StorageFolder fold;
-            if (await FolderExists(local, _typeDict))
-            {
-                fold = await local.GetFolderAsync(_typeDict);
-            }
-            else
-            {
-                fold = await local.CreateFolderAsync(_typeDict);
-            }
-
-            if (!await FileExists(fold, FileName))
-                fold.CreateFileAsync(FileName);
-            //StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
-            StorageFile file = await fold.CreateFileAsync(FileName, CreationCollisionOption.ReplaceExisting);
-//            IRandomAccessStreamReference thumbail = RandomAccessStreamReference.CreateFromUri(new Uri(path));
-//            StorageFile fileTemp =
-//                await StorageFile.ReplaceWithStreamedFileFromUriAsync(file, new Uri(@"ms-appx:///Data/" + TypeDict), thumbail);
-            //StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(TypeDict + FileName, CreationCollisionOption.ReplaceExisting);
-
-            using (StreamWriter sWrite = new StreamWriter(await file.OpenStreamForWriteAsync()))
-            {
-                sWrite.Flush();
-                await sWrite.WriteAsync(value);
-                await sWrite.FlushAsync();
-                sWrite.Dispose();
-            }
-            //_lstWords.Clear();
-            //_lstWords = await LoadListWords();
-        }
+        #endregion
     }
 }

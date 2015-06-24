@@ -9,10 +9,29 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <ListView Name="ListViewDict">
-            
-        </ListView>
-        
-        <StackPanel Name="StackPanel"></StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <StackPanel Margin="19,12,0,25">
+                <TextBlock Text="DICTIONARY"
+                       Style="{ThemeResource TitleTextBlockStyle}"
+                       Typography.Capitals="SmallCaps" />
+                <TextBlock Text="Settings"
+                       Margin="0,-6,0,0"
+                       Style="{ThemeResource HeaderTextBlockStyle}" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <ComboBox Header="Type dictionary"
+                      Name="ComboBoxTypeDict"
+                      SelectionChanged="ComboBoxTypeDict_OnSelectionChanged"
+                      Margin="12,10,12,0">
+                 
+            </ComboBox>
+        </Grid>
     </Grid>
 </Page>

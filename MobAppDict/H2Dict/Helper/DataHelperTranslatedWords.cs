@@ -9,19 +9,25 @@ namespace H2Dict.Helper
     public class DataHelperTranslatedWords
     {
         private const string FileName = "TranslatedWords.txt";
-        private string _typeDict = App.TypeDictIns.GetTypeDict();
+        private string _typeDict;
         private static DataHelperTranslatedWords _dataHelper = new DataHelperTranslatedWords();
-        private List<string> _lstWords = new List<string>();
+        private List<string> _lstWords;
 
+        #region Load from file
         public async static Task<List<string>> LoadListWords()
         {
-            return await _dataHelper.LoadListWords("EnVi");
+            return await _dataHelper.LoadListWordsAsync();
         }
 
-        private async Task<List<string>> LoadListWords(string typeDict)
+        private async Task<List<string>> LoadListWordsAsync()
         {
-            if (_lstWords.Count != 0)
+            _lstWords = new List<string>();
+
+            if (_lstWords.Count != 0 && !App.ChangeDict)
                 return _lstWords;
+
+           
+            _typeDict = App.TypeDictIns.GetTypeDict();
 
             string result = null;
             StorageFolder local = ApplicationData.Current.LocalFolder;
@@ -66,8 +72,13 @@ namespace H2Dict.Helper
             
         }
 
+        #endregion
+
+        #region Save to file
         private async Task SaveListWords(string value)
         {
+            _typeDict = App.TypeDictIns.GetTypeDict();
+
             StorageFolder local = ApplicationData.Current.LocalFolder;
             StorageFolder fold;
             if (await FolderExists(local, _typeDict))
@@ -93,6 +104,9 @@ namespace H2Dict.Helper
             _lstWords = await LoadListWords();
         }
 
+        #endregion
+
+        #region Support method
         private async Task<bool> FolderExists(StorageFolder folder, string name)
         {
             try
@@ -112,5 +126,6 @@ namespace H2Dict.Helper
             catch { return false; }
             return true;
         }
+        #endregion
     }
 }

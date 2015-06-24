@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Contacts;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Phone.UI.Input;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -33,7 +35,7 @@ namespace H2Dict
     //        set { _lstWords = value; }
     //    }
 
-        private Dict _dict = new Dict();
+        private Dict _dict;
 
         public Dict Dict
         {
@@ -51,6 +53,8 @@ namespace H2Dict
         public MainPage()
         {
             this.InitializeComponent();
+
+            _dict = new Dict();
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
 
@@ -84,14 +88,20 @@ namespace H2Dict
             // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.
+            
             if(Dict.LstWord.LstKey.Count == 0)
                 this.navigationHelper.OnNavigatedTo(e);
+
+            if (App.ChangeDict)
+                Dict.LoadListWords();
+
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             //remove the handler before you leave!
+            //this.navigationHelper.OnNavigatedFrom(e);
             HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
         }
 
@@ -143,6 +153,37 @@ namespace H2Dict
         private void AppBarButtonSettings_OnClick(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof (Settings));
+        }
+
+        private async void ButtonAddFav_OnClick(object sender, RoutedEventArgs e)
+        {
+            
+            
+            if (txtDisplay.Text.Equals("N/A"))
+            {
+                string nofi = "Add favorite word fail!!!";
+                MessageDialog md = new MessageDialog(nofi);
+                await md.ShowAsync();
+            }
+            else
+            {
+                string nofi = "Add favorite word success!!!";
+                MessageDialog md = new MessageDialog(nofi);
+                await md.ShowAsync();
+
+                Dict.UpdateFavoriteWords(txtSearch.Text);
+            }
+           
+
+        }
+
+        private void GridDisplay_OnHolding(object sender, HoldingRoutedEventArgs e)
+        {
+            FrameworkElement senderElement = sender as FrameworkElement;
+            // If you need the clicked element:
+            // Item whichOne = senderElement.DataContext as Item;
+            FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
+            flyoutBase.ShowAt(senderElement);
         }
     }
 }

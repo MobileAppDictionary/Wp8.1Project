@@ -32,11 +32,23 @@ namespace H2Dict.Helper
             }
         }
 
+        public int GetInd()
+        {
+            return _ind;
+        }
+
         public void SetTypeDict(string nameDict)
         {
             _typeDict._ind = _typeDict.TypeDictList.FindIndex(x => x.Equals(nameDict));
             if (_typeDict._ind == -1)
                 _typeDict._ind = 0;
+        }
+
+        public void SetTypeDict(int ind)
+        {
+            if (ind >= _typeDict.TypeDictList.Count || ind < 0)
+                ind = 0;
+            _typeDict._ind = ind;
         }
 
         public string GetTypeDict()

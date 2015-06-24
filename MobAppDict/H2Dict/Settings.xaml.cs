@@ -59,7 +59,9 @@ namespace H2Dict
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            ListViewDict.ItemsSource = App.TypeDictIns.TypeDictList;
+            ComboBoxTypeDict.ItemsSource = App.TypeDictIns.TypeDictList;
+            ComboBoxTypeDict.SelectedIndex = App.TypeDictIns.GetInd();
+
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
 
@@ -81,6 +83,14 @@ namespace H2Dict
                 //Frame.GoBack();
                 e.Handled = true;
             }
+        }
+
+        private void ComboBoxTypeDict_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //string nameDict = ComboBoxTypeDict.SelectedValue.ToString();
+            int ind = ComboBoxTypeDict.SelectedIndex;
+            App.TypeDictIns.SetTypeDict(ind);
+            App.ChangeDict = true;
         }
     }
 }

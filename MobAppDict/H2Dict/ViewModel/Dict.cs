@@ -43,6 +43,12 @@ namespace H2Dict.ViewModel
         // Load All Words
         public async Task LoadListWords()
         {
+            if (_lstWord.LstKey.Count != 0)
+            {
+                _lstWord.LstKey.Clear();
+                _lstWord.LstLength.Clear();
+                _lstWord.LstOffset.Clear();
+            }
             _lstWord = await DataHelper.LoadListWords();
         }
 
@@ -58,7 +64,7 @@ namespace H2Dict.ViewModel
                 int length = GetDemicalValue(_lstWord.LstLength[ind]);
                 res = await GetMeaning(offset, length);
                 //res = offset + length + "";
-                res = _lstWord.LstOffset[ind] + " " + _lstWord.LstLength[ind] + " " + res;
+                //res = _lstWord.LstOffset[ind] + " " + _lstWord.LstLength[ind] + " " + res;
             }
 
             if (res == null)
@@ -166,6 +172,36 @@ namespace H2Dict.ViewModel
         public async Task UpdateFavoriteWords()
         {
             await DataHelperFavoriteWords.SaveListWords(_lstFavoriteWords);
+        }
+
+        public async void UpdateFavoriteWords(string word)
+        {
+            if (_lstTranslatedWords.Count == 0)
+            {
+                _lstTranslatedWords = await DataHelperFavoriteWords.LoadListWords();
+            }
+
+            int ind = _lstFavoriteWords.FindIndex(x => x.Equals(word));
+            // Word not found
+            if (ind == -1)
+            {
+                _lstFavoriteWords.Insert(0, word);
+
+//                if (_lstFavoriteWords.Count > 10)
+//                {
+//                    _lstFavoriteWords.RemoveAt(11);
+//                }
+            }
+            // Have been word
+            else
+            {
+                _lstFavoriteWords.RemoveAt(ind);
+                _lstFavoriteWords.Insert(0, word);
+            }
+
+            await DataHelperFavoriteWords.SaveListWords(_lstFavoriteWords);
+
+            //_lstTranslatedWords.Clear();
         }
 
         #endregion

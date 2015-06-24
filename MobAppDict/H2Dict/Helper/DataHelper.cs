@@ -14,10 +14,9 @@ namespace H2Dict.Helper
     {
         private const string fileInd = "index.txt";
         private const string fileDict = "dict.txt";
-        private string _typeDict = App.TypeDictIns.GetTypeDict();
 
         private static DataHelper _dataHelper = new DataHelper();
-        private ListWords _lstWords = new ListWords();
+        private ListWords _lstWords;
 
         public static async Task<ListWords> LoadListWords()
         {
@@ -26,11 +25,14 @@ namespace H2Dict.Helper
 
         private async Task<ListWords> LoadListWordsAsync()
         {
-            if (_lstWords.LstKey.Count != 0)
+            if(_lstWords == null)
+                _lstWords = new ListWords();
+
+            if (_lstWords.LstKey.Count != 0 && !App.ChangeDict)
                 return _lstWords;
-            
+
             string result = null;
-            string path = @"ms-appx:///Data/" + _typeDict + "/" + fileInd;
+            string path = @"ms-appx:///Data/" + App.TypeDictIns.GetTypeDict() + "/" + fileInd;
             StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
             
             using (StreamReader sRead = new StreamReader(await file.OpenStreamForReadAsync()))
@@ -46,7 +48,7 @@ namespace H2Dict.Helper
                 _lstWords.LstOffset.Add(strs[1]);
                 _lstWords.LstLength.Add(strs[2]);
             }
-
+            App.ChangeDict = false;
             return _lstWords;
         }
 
@@ -62,7 +64,7 @@ namespace H2Dict.Helper
             string result = null;
             byte[] buff = new byte[length];
 
-            string path = @"ms-appx:///Data/" + _typeDict + "/" + fileDict;
+            string path = @"ms-appx:///Data/" + App.TypeDictIns.GetTypeDict() + "/" + fileDict;
 
             StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
             int pos = 0;

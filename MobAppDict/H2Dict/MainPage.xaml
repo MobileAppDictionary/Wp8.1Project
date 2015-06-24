@@ -13,7 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid>
@@ -26,7 +26,7 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             
-            <Grid Margin="5,0,5,0">
+            <Grid Margin="10,0,5,0">
                 <AutoSuggestBox 
                     Name="txtSearch"
                     TextChanged="txtSearch_TextChanged"
@@ -41,19 +41,31 @@
                 </AutoSuggestBox>
             </Grid>
 
-            <Grid Grid.Column="1" Margin="5,0,5,0">
+            <Grid Grid.Column="1" Margin="10,0,5,0">
                 <Button Content="Search"
-                        Width="90"
-                        MinWidth="90"
+                        Width="80"
+                        MinWidth="80"
                         Name="btnSearch"
                         Click="btnSearch_Click"></Button>
             </Grid>
         </Grid>
-        
-        <Grid Grid.Row="2" >
-            <TextBlock Margin="5,0,5,0" Name="txtDisplay" Height="800" TextWrapping="Wrap" FontSize="20">
+
+        <Grid Grid.Row="2" Name="GridDisplay"  Holding="GridDisplay_OnHolding">
+            <FlyoutBase.AttachedFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem x:Name="ButtonAddFav"
+                            Text="Add favorite"
+                            Click="ButtonAddFav_OnClick"/>
+                    <MenuFlyoutItem x:Name="DeleteButton"
+                            Text="Delete"/>
+                </MenuFlyout>
+            </FlyoutBase.AttachedFlyout>
+            
+            <ScrollViewer   VerticalScrollBarVisibility="Hidden"  VerticalScrollMode="Enabled" VerticalContentAlignment="Top" >
+                <TextBlock Margin="20,0,20,20" Name="txtDisplay" TextWrapping="Wrap" Style="{ThemeResource BodyTextBlockStyle}" >
                 
-            </TextBlock>
+                </TextBlock>
+            </ScrollViewer>
         </Grid>
     </Grid>
     <Page.BottomAppBar>
@@ -63,7 +75,7 @@
                 <AppBarButton Icon="ZoomIn" IsCompact="False" Label="ZoomIn"/>
             </CommandBar.PrimaryCommands>-->
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="History" Name="AppBarButtonHistory" Click="AppBarButtonHistory_OnClick"/>
+                <AppBarButton Label="Translated words" Name="AppBarButtonHistory" Click="AppBarButtonHistory_OnClick"/>
                 <AppBarButton Label="Favorite words" Name="AppBarButtonFavorite" Click="AppBarButtonFavorite_OnClick"/>
                 <AppBarButton Label="Speech to text"/>
                 <AppBarButton Label="Settings" Name="AppBarButtonSettings" Click="AppBarButtonSettings_OnClick"/>
