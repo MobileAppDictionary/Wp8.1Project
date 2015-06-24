@@ -19,6 +19,7 @@ namespace H2Dict.ViewModel
             _lstWord = new ListWords();
             _lstTranslatedWords = new List<string>();
             _lstFavoriteWords = new List<string>();
+
         }
 
         public ListWords LstWord

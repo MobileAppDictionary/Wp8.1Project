@@ -183,7 +183,8 @@ namespace H2Dict
 
         private void AppBarButtonDel_OnClick(object sender, RoutedEventArgs e)
         {
-            
+            TranslatedWordsList.SelectionMode = ListViewSelectionMode.Multiple;
+            TranslatedWordsList.SelectAll();
         }
 
         private void TranslatedWordsList_OnSelectionModeChanged(object sender, RoutedEventArgs e)
@@ -220,7 +221,12 @@ namespace H2Dict
             TranslatedWordsList.ItemsSource = Dict.LstTranslatedWords;
             TranslatedWordsList.SelectionMode = ListViewSelectionMode.None;
 
-            //await Dict.ClearTranslatedWords();
+            await Dict.ClearTranslatedWords();
+        }
+
+        private void AppBarButtonCancel_OnClick(object sender, RoutedEventArgs e)
+        {
+            TranslatedWordsList.SelectionMode = ListViewSelectionMode.None;
         }
     }
 }

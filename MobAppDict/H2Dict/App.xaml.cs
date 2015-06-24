@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using H2Dict.Helper;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -31,10 +32,13 @@ namespace H2Dict
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
+
+        public static TypeDict TypeDictIns;
         public App()
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+            TypeDictIns = TypeDict.GetInstance();
         }
 
         /// <summary>

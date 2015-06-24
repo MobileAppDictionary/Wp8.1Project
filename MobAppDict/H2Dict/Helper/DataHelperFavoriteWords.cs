@@ -1,27 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.Storage.Streams;
 
 namespace H2Dict.Helper
 {
     public class DataHelperFavoriteWords
     {
         private const string FileName = "FavoriteWords.txt";
-        private const string TypeDict = "EnVi/";
+        private string _typeDict = App.TypeDictIns.GetTypeDict();
         private static DataHelperFavoriteWords _dataHelper = new DataHelperFavoriteWords();
         private List<string> _lstWords = new List<string>();
 
         public async static Task<List<string>> LoadListWords()
         {
-            return await _dataHelper.LoadListWords("EnVi/");
+            return await _dataHelper.LoadListWordsAsync();
         }
 
-        private async Task<List<string>> LoadListWords(string typeDict)
+        private async Task<List<string>> LoadListWordsAsync()
         {
             if (_lstWords.Count != 0)
                 return _lstWords;
@@ -31,13 +28,13 @@ namespace H2Dict.Helper
 //            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(path));
             StorageFolder local = ApplicationData.Current.LocalFolder;
             StorageFolder fold;
-            if (await FolderExists(local, TypeDict))
+            if (await FolderExists(local, _typeDict))
             {
-                fold = await StorageFolder.GetFolderFromPathAsync(local + TypeDict);
+                fold = await local.GetFolderAsync(_typeDict);
             }
             else
             {
-                fold = await local.CreateFolderAsync(TypeDict);
+                fold = await local.CreateFolderAsync(_typeDict);
             }
 
             if (!await FileExists(fold, FileName))
@@ -93,13 +90,13 @@ namespace H2Dict.Helper
             //string path = @"ms-appx:///Data/" + TypeDict + FileName;
             StorageFolder local = ApplicationData.Current.LocalFolder;
             StorageFolder fold;
-            if (await FolderExists(local, TypeDict))
+            if (await FolderExists(local, _typeDict))
             {
-                fold = await StorageFolder.GetFolderFromPathAsync(local + TypeDict);
+                fold = await local.GetFolderAsync(_typeDict);
             }
             else
             {
-                fold = await local.CreateFolderAsync(TypeDict);
+                fold = await local.CreateFolderAsync(_typeDict);
             }
 
             if (!await FileExists(fold, FileName))

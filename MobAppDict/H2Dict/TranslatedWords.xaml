@@ -72,7 +72,8 @@
                           Label="Detele"/>
             
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="Delete all" Name="AppBarButtonDel" Click="AppBarButtonDel_OnClick"/>
+                <AppBarButton Label="Select all" Name="AppBarButtonDel" Click="AppBarButtonDel_OnClick"/>
+                <AppBarButton Label="Cancel" Name="AppBarButtonCancel" Click="AppBarButtonCancel_OnClick"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

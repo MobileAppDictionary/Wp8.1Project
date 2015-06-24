@@ -66,6 +66,7 @@
                 <AppBarButton Label="History" Name="AppBarButtonHistory" Click="AppBarButtonHistory_OnClick"/>
                 <AppBarButton Label="Favorite words" Name="AppBarButtonFavorite" Click="AppBarButtonFavorite_OnClick"/>
                 <AppBarButton Label="Speech to text"/>
+                <AppBarButton Label="Settings" Name="AppBarButtonSettings" Click="AppBarButtonSettings_OnClick"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
