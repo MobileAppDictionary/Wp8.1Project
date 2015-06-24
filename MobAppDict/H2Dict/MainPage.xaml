@@ -13,6 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -50,7 +51,16 @@
             </Grid>
         </Grid>
 
-        <Grid Grid.Row="2" Name="GridDisplay"  Holding="GridDisplay_OnHolding">
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Name="TextBlockWord" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="20,10,0,10"> </TextBlock>
+            <AppBarButton Grid.Column="1" Icon="Volume" Name="ButtonSpeech" Click="ButtonSpeech_OnClick"/>
+        </Grid>
+        
+        <Grid Grid.Row="3" Name="GridDisplay"  Holding="GridDisplay_OnHolding">
             <FlyoutBase.AttachedFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem x:Name="ButtonAddFav"
@@ -60,7 +70,6 @@
                             Text="Delete"/>
                 </MenuFlyout>
             </FlyoutBase.AttachedFlyout>
-            
             <ScrollViewer   VerticalScrollBarVisibility="Hidden"  VerticalScrollMode="Enabled" VerticalContentAlignment="Top" >
                 <TextBlock Margin="20,0,20,20" Name="txtDisplay" TextWrapping="Wrap" Style="{ThemeResource BodyTextBlockStyle}" >
                 

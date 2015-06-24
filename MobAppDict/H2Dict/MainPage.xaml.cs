@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Contacts;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.SpeechSynthesis;
 using Windows.Phone.UI.Input;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -114,11 +116,16 @@ namespace H2Dict
         {
             string str = txtSearch.Text;
             string res = await Dict.Search(str);
-
+            
+            
             txtDisplay.Text = res;
-            // Lưu lược sử.
-            if(res != "N/A")
+            // Lưu lược sử. + Speech
+            if (res != "N/A")
+            {
                 Dict.UpdateTranslatedWords(str);
+                TextBlockWord.Text = txtSearch.Text;
+            }
+                
         }
 
         private void txtSearch_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -184,6 +191,28 @@ namespace H2Dict
             // Item whichOne = senderElement.DataContext as Item;
             FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
             flyoutBase.ShowAt(senderElement);
+        }
+
+        private void ButtonSpeech_OnClick(object sender, RoutedEventArgs e)
+        {
+            MediaElement audioPlayer = new MediaElement();
+            SpeakText(audioPlayer, TextBlockWord.Text);
+        }
+
+        private async void SpeakText(MediaElement audioPlayer, string TTS)
+        {
+            SpeechSynthesizer ttssynthesizer = new SpeechSynthesizer();
+
+            //Set the Voice/Speaker
+            using (var Speaker = new SpeechSynthesizer())
+            {
+                Speaker.Voice = (SpeechSynthesizer.AllVoices.First(x => x.Gender == VoiceGender.Female));
+                ttssynthesizer.Voice = Speaker.Voice;
+            }
+
+            SpeechSynthesisStream ttsStream = await ttssynthesizer.SynthesizeTextToStreamAsync(TTS);
+
+            audioPlayer.SetSource(ttsStream, "");
         }
     }
 }
