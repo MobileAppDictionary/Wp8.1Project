@@ -66,8 +66,6 @@
                     <MenuFlyoutItem x:Name="ButtonAddFav"
                             Text="Add favorite"
                             Click="ButtonAddFav_OnClick"/>
-                    <MenuFlyoutItem x:Name="DeleteButton"
-                            Text="Delete"/>
                 </MenuFlyout>
             </FlyoutBase.AttachedFlyout>
             <ScrollViewer   VerticalScrollBarVisibility="Hidden"  VerticalScrollMode="Enabled" VerticalContentAlignment="Top" >
@@ -86,7 +84,7 @@
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Translated words" Name="AppBarButtonHistory" Click="AppBarButtonHistory_OnClick"/>
                 <AppBarButton Label="Favorite words" Name="AppBarButtonFavorite" Click="AppBarButtonFavorite_OnClick"/>
-                <AppBarButton Label="Speech to text"/>
+                <AppBarButton Label="Speech to text" Name="AppBarButtonStt" Click="AppBarButtonStt_OnClick"/>
                 <AppBarButton Label="Settings" Name="AppBarButtonSettings" Click="AppBarButtonSettings_OnClick"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>

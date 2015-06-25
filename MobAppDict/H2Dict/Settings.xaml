@@ -11,7 +11,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid>
@@ -30,7 +32,23 @@
                       Name="ComboBoxTypeDict"
                       SelectionChanged="ComboBoxTypeDict_OnSelectionChanged"
                       Margin="12,10,12,0">
-                 
+            </ComboBox>
+        </Grid>
+        <Grid Grid.Row="2">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton Icon="Add" Label="Add" Click="ButtonBase_OnClick"/>
+                <TextBlock Style="{ThemeResource BaseTextBlockStyle}"
+                           VerticalAlignment="Center">
+                    Add more language
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="3">
+            <ComboBox Header="Gender"
+                      Name="ComboBoxGender"
+                      SelectionChanged="ComboBoxGender_OnSelectionChanged"
+                      Margin="12,10,12,0">
+                
             </ComboBox>
         </Grid>
     </Grid>

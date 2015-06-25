@@ -56,7 +56,7 @@ namespace H2Dict.ViewModel
         public async Task<string> Search(string key)
         {
             string res = null;
-
+            key = key.ToLower();
             int ind = _lstWord.LstKey.FindIndex(x => x.Equals(key));
             if (ind >= 0)
             {
@@ -75,6 +75,7 @@ namespace H2Dict.ViewModel
         // Get list suggestion
         public List<string> GetSuggestion(string key)
         {
+            key = key.ToLower();
             List<string> lstString = new List<string>();
             int len = key.Length;
 
@@ -124,6 +125,7 @@ namespace H2Dict.ViewModel
 
         public async void UpdateTranslatedWords(string word)
         {
+            word = word.ToLower();
             if (_lstTranslatedWords.Count == 0)
             {
                 _lstTranslatedWords = await DataHelperTranslatedWords.LoadListWords();
@@ -176,6 +178,7 @@ namespace H2Dict.ViewModel
 
         public async void UpdateFavoriteWords(string word)
         {
+            word = word.ToLower();
             if (_lstTranslatedWords.Count == 0)
             {
                 _lstTranslatedWords = await DataHelperFavoriteWords.LoadListWords();

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Phone.UI.Input;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -31,6 +32,8 @@ namespace H2Dict
             get { return navigationHelper; }
         }
 
+        private List<string> lstGender = new List<string>();
+
         public Settings()
         {
             this.InitializeComponent();
@@ -41,6 +44,8 @@ namespace H2Dict
             this.NavigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.NavigationHelper.SaveState += this.NavigationHelper_SaveState;
 
+            lstGender.Add("male");
+            lstGender.Add("female");
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
@@ -61,7 +66,8 @@ namespace H2Dict
         {
             ComboBoxTypeDict.ItemsSource = App.TypeDictIns.TypeDictList;
             ComboBoxTypeDict.SelectedIndex = App.TypeDictIns.GetInd();
-
+            ComboBoxGender.ItemsSource = lstGender;
+            ComboBoxGender.SelectedValue = App.TypeDictIns.Gender;
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
 
@@ -90,6 +96,19 @@ namespace H2Dict
             //string nameDict = ComboBoxTypeDict.SelectedValue.ToString();
             int ind = ComboBoxTypeDict.SelectedIndex;
             App.TypeDictIns.SetTypeDict(ind);
+            App.ChangeDict = true;
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            MessageDialog md = new MessageDialog("Coming soon... :)");
+            md.ShowAsync();
+        }
+
+        private void ComboBoxGender_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int ind = ComboBoxGender.SelectedIndex;
+            App.TypeDictIns.Gender = lstGender[ind];
             App.ChangeDict = true;
         }
     }

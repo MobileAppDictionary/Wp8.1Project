@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Contacts;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.SpeechRecognition;
 using Windows.Media.SpeechSynthesis;
 using Windows.Phone.UI.Input;
 using Windows.UI.Popups;
@@ -17,10 +18,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
 using H2Dict.Helper;
 using H2Dict.ViewModel;
 using View.Common;
+
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
 namespace H2Dict
@@ -30,19 +31,19 @@ namespace H2Dict
     /// </summary>
     public sealed partial class MainPage : Page
     {
-    //    private ListWords _lstWords = new ListWords();
-    //    public ListWords LstWords
-    //    {
-    //        get { return _lstWords; }
-    //        set { _lstWords = value; }
-    //    }
+        //    private ListWords _lstWords = new ListWords();
+        //    public ListWords LstWords
+        //    {
+        //        get { return _lstWords; }
+        //        set { _lstWords = value; }
+        //    }
 
         private Dict _dict;
 
         public Dict Dict
         {
-          get { return _dict; }
-          set { _dict = value; }
+            get { return _dict; }
+            set { _dict = value; }
         }
 
         private readonly NavigationHelper navigationHelper;
@@ -68,7 +69,6 @@ namespace H2Dict
 
             if (App.TypeDictIns.Speech.Equals(""))
                 ButtonSpeech.IsEnabled = false;
-
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
@@ -95,8 +95,8 @@ namespace H2Dict
             // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.
-            
-            if(Dict.LstWord.LstKey.Count == 0)
+
+            if (Dict.LstWord.LstKey.Count == 0)
                 this.navigationHelper.OnNavigatedTo(e);
 
             if (App.ChangeDict)
@@ -106,7 +106,7 @@ namespace H2Dict
                 else ButtonSpeech.IsEnabled = true;
                 Dict.LoadListWords();
             }
-                
+
 
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
@@ -127,8 +127,8 @@ namespace H2Dict
         {
             string str = txtSearch.Text;
             string res = await Dict.Search(str);
-            
-            
+
+
             txtDisplay.Text = res;
             // Lưu lược sử. + Speech
             if (res != "N/A")
@@ -136,7 +136,6 @@ namespace H2Dict
                 Dict.UpdateTranslatedWords(str);
                 TextBlockWord.Text = txtSearch.Text;
             }
-                
         }
 
         private void txtSearch_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -175,8 +174,6 @@ namespace H2Dict
 
         private async void ButtonAddFav_OnClick(object sender, RoutedEventArgs e)
         {
-            
-            
             if (txtDisplay.Text.Equals("N/A"))
             {
                 string nofi = "Add favorite word fail!!!";
@@ -191,8 +188,6 @@ namespace H2Dict
 
                 Dict.UpdateFavoriteWords(txtSearch.Text);
             }
-           
-
         }
 
         private void GridDisplay_OnHolding(object sender, HoldingRoutedEventArgs e)
@@ -207,23 +202,63 @@ namespace H2Dict
         private async void ButtonSpeech_OnClick(object sender, RoutedEventArgs e)
         {
             MediaElement audioPlayer = new MediaElement();
-            SpeakText(audioPlayer, TextBlockWord.Text, App.TypeDictIns.Speech);
+            SpeakText(audioPlayer, TextBlockWord.Text, App.TypeDictIns.Speech, App.TypeDictIns.Gender);
             //Speech Synthesis Markup Language
 
             //SpeakText(audioPlayer, str);
         }
 
-        private async void SpeakText(MediaElement audioPlayer, string tts, string lang)
+        private async void SpeakText(MediaElement audioPlayer, string tts, string lang, string gender)
         {
             string str = @"<speak version=""1.0""
              xmlns=""http://www.w3.org/2001/10/synthesis"" xml:lang=""" + lang + @""">
-             <voice gender=""male""> " + tts + @"
+             <voice gender=""" + gender + @"""> " + tts + @"
                         </voice>                      
                         </speak>";
 
             var ttsJP = new SpeechSynthesizer();
             SpeechSynthesisStream ttsStream = await ttsJP.SynthesizeSsmlToStreamAsync(str);
             audioPlayer.SetSource(ttsStream, "");
+        }
+
+        private async void AppBarButtonStt_OnClick(object sender, RoutedEventArgs e)
+        {
+            SpeechRecognitionResult speechRecognitionResult;
+            try
+            {
+                SpeechRecognizer speechRecog = new SpeechRecognizer();
+
+                // Compile the dictation grammar
+                await speechRecog.CompileConstraintsAsync();
+
+                // Start Recognition
+                speechRecognitionResult = await speechRecog.RecognizeWithUIAsync();
+
+                var sttDialog = new Windows.UI.Popups.MessageDialog(speechRecognitionResult.Text, "Heard You said...");
+
+                sttDialog.Commands.Add(new UICommand("Ok"));
+                sttDialog.Commands.Add(new UICommand("No"));
+
+                var res = await sttDialog.ShowAsync();
+
+                if (res.Label == "Ok")
+                {
+                    string str = speechRecognitionResult.Text;
+                    txtSearch.Text = str.Substring(0,str.Length - 1);
+                }
+                // Show Output
+            }
+            catch
+            {
+                MessageDialog nofiMss =
+                    new MessageDialog("Activate Speech Recognition through settings or long press windows key." +
+                                      System.Environment.NewLine + "If Activated give Speech Input");
+                nofiMss.ShowAsync();
+                
+            }
+
+            
+
         }
     }
 }

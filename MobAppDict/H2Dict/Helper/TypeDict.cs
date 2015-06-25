@@ -12,6 +12,7 @@ namespace H2Dict.Helper
         private static TypeDict _typeDict = new TypeDict();
         private int _ind = 0;
         public string Speech = "";
+        public string Gender = "male";
         public List<string> TypeDictList = new List<string>();
 
         private TypeDict()
