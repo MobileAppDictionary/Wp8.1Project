@@ -64,6 +64,11 @@ namespace H2Dict
             this.NavigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.NavigationHelper.SaveState += this.NavigationHelper_SaveState;
 
+            App.TypeDictIns.SetTypeDict(App.TypeDictIns.GetInd());
+
+            if (App.TypeDictIns.Speech.Equals(""))
+                ButtonSpeech.IsEnabled = false;
+
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
@@ -95,7 +100,13 @@ namespace H2Dict
                 this.navigationHelper.OnNavigatedTo(e);
 
             if (App.ChangeDict)
+            {
+                if (App.TypeDictIns.Speech.Equals(""))
+                    ButtonSpeech.IsEnabled = false;
+                else ButtonSpeech.IsEnabled = true;
                 Dict.LoadListWords();
+            }
+                
 
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
@@ -193,25 +204,25 @@ namespace H2Dict
             flyoutBase.ShowAt(senderElement);
         }
 
-        private void ButtonSpeech_OnClick(object sender, RoutedEventArgs e)
+        private async void ButtonSpeech_OnClick(object sender, RoutedEventArgs e)
         {
             MediaElement audioPlayer = new MediaElement();
-            SpeakText(audioPlayer, TextBlockWord.Text);
+            SpeakText(audioPlayer, TextBlockWord.Text, App.TypeDictIns.Speech);
+            //Speech Synthesis Markup Language
+
+            //SpeakText(audioPlayer, str);
         }
 
-        private async void SpeakText(MediaElement audioPlayer, string TTS)
+        private async void SpeakText(MediaElement audioPlayer, string tts, string lang)
         {
-            SpeechSynthesizer ttssynthesizer = new SpeechSynthesizer();
+            string str = @"<speak version=""1.0""
+             xmlns=""http://www.w3.org/2001/10/synthesis"" xml:lang=""" + lang + @""">
+             <voice gender=""male""> " + tts + @"
+                        </voice>                      
+                        </speak>";
 
-            //Set the Voice/Speaker
-            using (var Speaker = new SpeechSynthesizer())
-            {
-                Speaker.Voice = (SpeechSynthesizer.AllVoices.First(x => x.Gender == VoiceGender.Female));
-                ttssynthesizer.Voice = Speaker.Voice;
-            }
-
-            SpeechSynthesisStream ttsStream = await ttssynthesizer.SynthesizeTextToStreamAsync(TTS);
-
+            var ttsJP = new SpeechSynthesizer();
+            SpeechSynthesisStream ttsStream = await ttsJP.SynthesizeSsmlToStreamAsync(str);
             audioPlayer.SetSource(ttsStream, "");
         }
     }

@@ -11,11 +11,12 @@ namespace H2Dict.Helper
     {
         private static TypeDict _typeDict = new TypeDict();
         private int _ind = 0;
-
+        public string Speech = "";
         public List<string> TypeDictList = new List<string>();
 
         private TypeDict()
         {
+
             LoadTypeDict();
         }
 
@@ -49,6 +50,16 @@ namespace H2Dict.Helper
             if (ind >= _typeDict.TypeDictList.Count || ind < 0)
                 ind = 0;
             _typeDict._ind = ind;
+            string temp = TypeDictList[ind];
+            int iTemp = temp.IndexOf('.');
+            if (iTemp != -1)
+            {
+                Speech = temp.Substring(iTemp + 1);
+            }
+            else
+            {
+                Speech = "";
+            }
         }
 
         public string GetTypeDict()

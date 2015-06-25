@@ -41,6 +41,7 @@ namespace H2Dict
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
             TypeDictIns = TypeDict.GetInstance();
+            //TypeDictIns.SetTypeDict(TypeDictIns.GetInd());
         }
 
         /// <summary>
